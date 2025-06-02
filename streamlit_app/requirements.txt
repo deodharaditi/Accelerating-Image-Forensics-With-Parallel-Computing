@@ -4,3 +4,4 @@ transformers
 pillow 
 matplotlib 
 seaborn
+fpdf
