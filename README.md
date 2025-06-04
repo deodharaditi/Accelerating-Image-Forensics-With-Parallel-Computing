@@ -1,27 +1,27 @@
 #  Accelerating Image Forensics With Parallel Computing
 
-##  Overview
+## Overview
 
 This project explores the application of advanced deep learning and parallel computing strategies to accelerate **image forensics**, focusing on detecting **AI-generated (deepfake) images**. Two core architectures — **ResNet18** and **Vision Transformers (ViT)** — were used to classify real vs. AI-generated content, while various parallelism techniques were benchmarked for performance and scalability.
 
 ---
 
-##  Key Highlights
+## 🔍Key Highlights
 
--  **Models**: ResNet18 (lightweight CNN) & Vision Transformer (ViT)
--  **Dataset**: 90,000+ real and AI-generated images from [Kaggle](https://www.kaggle.com/competitions/detect-ai-vs-human-generated-images)
--  **Parallelism Explored**:
-  - Distributed Data Parallel (DDP) across 1, 2, and 4 GPUs
-  - Model Parallelism (manual split across GPUs)
-  - Mixed Precision Training (AMP with FP16)
-  - CPU Thread Parallelism (1, 2, 4 workers)
--  **Benchmarking**:
-  - Measured speedup, efficiency, memory usage, training time, accuracy
-  - Comparative visualizations across CPU/GPU setups
+-  🧠 **Models**: ResNet18 (lightweight CNN) & Vision Transformer (ViT)
+-  📁 **Dataset**: 90,000+ real and AI-generated images from [Kaggle](https://www.kaggle.com/competitions/detect-ai-vs-human-generated-images)
+-  ⚙️ **Parallelism Explored**:
+    - Distributed Data Parallel (DDP) across 1, 2, and 4 GPUs
+    - Model Parallelism (manual split across GPUs)
+    - Mixed Precision Training (AMP with FP16)
+    - CPU Thread Parallelism (1, 2, 4 workers)
+-  📊 **Benchmarking**:
+    - Measured speedup, efficiency, memory usage, training time, accuracy
+    - Comparative visualizations across CPU/GPU setups
 
 ---
 
-##  Methodology
+## 🧪 Methodology
 
 1. **Preprocessing**:
    - Resized images to 224×224
@@ -39,7 +39,7 @@ This project explores the application of advanced deep learning and parallel com
 
 ---
 
-##  Results Summary
+## 📈 Results Summary
 
 | Method                | Model     | GPUs | Speedup | Accuracy | Training Time (s) | Max GPU Mem (GB) |
 |----------------------|-----------|------|---------|----------|--------------------|------------------|
@@ -52,11 +52,12 @@ This project explores the application of advanced deep learning and parallel com
 
 ---
 
-##  Streamlit App
+## 💻 Streamlit App
 
 Experience our model live through a user-friendly UI:
 
- [Launch App](https://ai-vs-real-image-detection-hpc.streamlit.app/)
+ 
+🔗 [Launch App](https://ai-vs-real-image-detection-hpc.streamlit.app/)
 
 **Features**:
 - Upload real/AI images for classification
@@ -66,7 +67,7 @@ Experience our model live through a user-friendly UI:
 
 ---
 
-##  Full Report & Code
+## 📘 Full Report & Code
 
 This repository includes:
 -  Performance plots (training time, speedup, efficiency)
