@@ -77,8 +77,8 @@ This repository includes:
 
 ##  Acknowledgements
 
-- **Professor Handan Liu** – CSYE7105 Instructor (High Performance ML & AI)
-- **Teammate** – [Insert teammate name]
+- **CSYE7105 Instructor (High Performance ML & AI)** – Professor Handan Liu
+- **Teammate** – Kaushik Malikireddy
 - Built with: PyTorch, Streamlit, OpenCV, NCCL, DDP
 
 ---
