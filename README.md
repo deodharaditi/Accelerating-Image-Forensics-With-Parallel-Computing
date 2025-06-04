@@ -1,79 +1,89 @@
-# AI vs Real Image Detection - Streamlit Application
+#  Accelerating Image Forensics With Parallel Computing
 
-## Overview
-This Streamlit application allows users to detect whether an image is AI-generated or real using two different deep learning models: ResNet18 and Vision Transformer (ViT). Users can upload their own images, select which model(s) to use, and view detailed analysis results with confidence scores and visual comparisons.
+##  Overview
 
-## Features
-- Image upload functionality with preview
-- Support for both ResNet18 and Vision Transformer models
-- Side-by-side model comparison option
-- Detailed visualization of prediction results
-- Confidence score display for both classes
-- Performance metrics (processing time)
-- Responsive design for different screen sizes
+This project explores the application of advanced deep learning and parallel computing strategies to accelerate **image forensics**, focusing on detecting **AI-generated (deepfake) images**. Two core architectures — **ResNet18** and **Vision Transformers (ViT)** — were used to classify real vs. AI-generated content, while various parallelism techniques were benchmarked for performance and scalability.
 
-## Project Structure
-```
-streamlit_app/
-├── app.py              # Main Streamlit application
-├── models.py           # Model implementation classes
-├── ui_design.md        # UI design documentation
-└── samples/            # Sample images directory
-    └── sample_real.jpg # Default sample image
-```
+---
 
-## Installation and Setup
+##  Key Highlights
 
-### Prerequisites
-- Python 3.8+
-- PyTorch
-- Streamlit
-- Transformers library
+-  **Models**: ResNet18 (lightweight CNN) & Vision Transformer (ViT)
+-  **Dataset**: 90,000+ real and AI-generated images from [Kaggle](https://www.kaggle.com/competitions/detect-ai-vs-human-generated-images)
+-  **Parallelism Explored**:
+  - Distributed Data Parallel (DDP) across 1, 2, and 4 GPUs
+  - Model Parallelism (manual split across GPUs)
+  - Mixed Precision Training (AMP with FP16)
+  - CPU Thread Parallelism (1, 2, 4 workers)
+-  **Benchmarking**:
+  - Measured speedup, efficiency, memory usage, training time, accuracy
+  - Comparative visualizations across CPU/GPU setups
 
-### Installation Steps
-1. Clone the repository or extract the provided files
-2. Install the required dependencies:
-   ```
-   pip install streamlit torch torchvision transformers pillow matplotlib seaborn
-   ```
-3. Navigate to the project directory
+---
 
-## Running the Application
-Run the Streamlit application with:
-```
-streamlit run app.py
-```
+##  Methodology
 
-## Usage Instructions
-1. Upload an image using the file uploader or use the provided sample image
-2. Select which model(s) to use for analysis:
-   - ResNet18: Faster but potentially less accurate
-   - Vision Transformer: More accurate but potentially slower
-   - Compare Both: Run both models and compare results
-3. Click the "Analyze" button to process the image
-4. View the results, including:
-   - Prediction (Real or AI-generated)
-   - Confidence scores
-   - Processing time
-   - Comparison charts (when using both models)
+1. **Preprocessing**:
+   - Resized images to 224×224
+   - Normalized using ImageNet statistics
+   - Loaded via PyTorch `DataLoader` with multiprocessing
+2. **Training**:
+   - ResNet18 and ViT trained using `torchrun` or model-split logic
+   - All benchmarks tested with and without AMP
+   - CPU parallelism used for baseline speed comparison
+3. **Evaluation**:
+   - Accuracy measured on test/validation sets
+   - GPU memory tracked via `torch.cuda.max_memory_allocated()`
+   - Speedup = Baseline Time / Current Time
+   - Efficiency = Speedup / Number of Devices
 
-## Model Information
-- **ResNet18**: A residual network with 18 layers, pre-trained on ImageNet and fine-tuned for AI vs real image detection
-- **Vision Transformer**: A transformer-based model that divides images into patches and processes them with self-attention mechanisms
+---
 
-## Technical Notes
-- The application uses PyTorch for model inference
-- Images are preprocessed to 224x224 pixels and normalized
-- Models are cached to improve performance for subsequent analyses
-- GPU acceleration is used when available
+##  Results Summary
 
-## Limitations
-- The models are based on the training data provided and may not generalize to all types of AI-generated images
-- Performance may vary depending on image quality and characteristics
-- First-time model loading may take a few seconds
+| Method                | Model     | GPUs | Speedup | Accuracy | Training Time (s) | Max GPU Mem (GB) |
+|----------------------|-----------|------|---------|----------|--------------------|------------------|
+| Single GPU (Baseline)| ResNet18  | 1    | 1×      | 98.58%   | 743.45             | 0.50             |
+| Model Parallel        | ResNet18  | 2    | ~1×     | 98.75%   | 741.73             | 0.46             |
+| DDP + AMP             | ViT       | 4    | 2.25×   | 99.90%   | 254.92             | ~0.40            |
+| CPU Parallel (2 Core) | ResNet18  | CPU  | 1.42×   | 96.42%   | (Scaled from 25%)  | —                |
 
-## Future Improvements
-- Add more model options
-- Implement batch processing for multiple images
-- Add detailed explanations of model decisions
-- Improve performance on edge cases
+>  ViT benefited greatly from GPU scaling. ResNet18 showed limited GPU scaling due to its small model size but benefited from memory-aware training.
+
+---
+
+##  Streamlit App
+
+Experience our model live through a user-friendly UI:
+
+ [Launch App](https://ai-vs-real-image-detection-hpc.streamlit.app/)
+
+**Features**:
+- Upload real/AI images for classification
+- Compare ResNet18 vs ViT predictions
+- Download logs and CSV outputs
+- Batch processing + confidence scores
+
+---
+
+##  Full Report & Code
+
+This repository includes:
+-  Performance plots (training time, speedup, efficiency)
+-  Model training/evaluation code (CPU & GPU)
+-  Full project report with graphs and conclusions
+
+---
+
+##  Acknowledgements
+
+- **Professor Handan Liu** – CSYE7105 Instructor (High Performance ML & AI)
+- **Teammate** – [Insert teammate name]
+- Built with: PyTorch, Streamlit, OpenCV, NCCL, DDP
+
+---
+
+##  Future Scope
+
+- Integrate **Fully Sharded Data Parallel (FSDP)**
+- Extend to **video-based deepfake detection**
